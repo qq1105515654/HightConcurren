@@ -1,0 +1,8 @@
+server:
+  port: 8868
+logging:
+  config: classpath:logbak-spring.xml
+  level:
+    hightconcurren: debug
+    org:
+      mybatis: debug

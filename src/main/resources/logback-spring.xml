@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+<configuration debug="false" scan="false" scanPeriod="60 seconds">
+    &lt;!&ndash;定义日志的根目录&ndash;&gt;
+    <property name="LOG_HOME" value="${basedir}/logs/" />
+    &lt;!&ndash;定义日志文件名称&ndash;&gt;
+    <property name="appName" value="JucApplication" />
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        &lt;!&ndash;
+        日志输出格式：
+            %d表示日期时间.
+            %thread表示线程名.
+            %-5level:级别从左显示五个字符宽度.
+            %logger{50}表示logger名字最长50个字符串，否则按 “.” 句点分割.
+            %msg 日志消息.
+            %n 换行符
+        &ndash;&gt;
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} -%msg%n</pattern>
+        </layout>
+    </appender>
+
+    &lt;!&ndash;滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件&ndash;&gt;
+    <appender name="appLogAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        &lt;!&ndash;指定日志文件的名称&ndash;&gt;
+        <file>${LOG_HOME}/${appName}.log</file>
+
+        &lt;!&ndash;
+            当发生滚动时，决定RollingFileAppender 的行为，涉及文件移动和重命名
+            TimeBasedRollingPolicy：最常用的滚动策略，它根据时间来指定滚动策略，
+            既负责滚动也负责触发滚动。
+        &ndash;&gt;
+        <rollingPoliy  class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            &lt;!&ndash;
+            滚动时产生文件的存放位置以及文件名称
+            %d{yyyy-MM-dd} 表示按天进行日志滚动
+            %i 当日志文件大小超过 maxFileSize时，按照 i 进行文件滚动
+            &ndash;&gt;
+            <fileNamePattern>${LOG_HOME}/${appName}-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            &lt;!&ndash;
+            可选节点，控制保留的归档文件的最大数量，超出数量就删除旧文件。假设设置每天滚动，且MaxHistory 为 365，
+            每天只产生一个日志文件，则只保存最近365天的日志文件，删除之前的旧日志文件。注意，删除旧文件时为了归档而创建的目录
+            也会被删除。
+            &ndash;&gt;
+            <MaxHistory>365</MaxHistory>
+            &lt;!&ndash;当日志文件超过maxFileSize指定的大小时，根据上面提到的%i进行日志文件滚动
+                    注意此处配置SizeBasedTriggeringPolicy是无法实现按文件大小进行滚动的，必须配置timeBasedFileNamingAndTriggeringPolicy
+                &ndash;&gt;
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>30MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPoliy>
+        &lt;!&ndash;日志输出格式&ndash;&gt;
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] - [%-5level] [%logger{50} : %line] - %msg%n</pattern>
+        </layout>
+    </appender>
+
+    &lt;!&ndash;
+        logger 主要用于存放日志对象，也可以自定义日志类型、级别
+        name 表示匹配的logger 类型前缀，也就是包的前半部分
+        level 要记录的日志记录，包括：TRACE < DEBUG < INFO < WARN < ERROR
+        additivity 作用在于 children-logger 是否使用 rootLogger 配置的appender进行输出,false 表示只作用当前logger 的appender-ref
+        true 表示当前logger的appender-ref 和 rootLogger的 appender-ref 都有效
+    &ndash;&gt;
+    <logger name="com.xgg" level="debug"/>
+    <logger name="org.springframework" level="debug" additivity="false" />
+
+    &lt;!&ndash;
+     root 跟 logger 是父子关系，没有特别定义则默认为 root,任何一个类只会和一个logger 对应，
+     要么是定义的logger ,要么是root,判断的关键在于找到这个logger,然后判断这个logger de appender
+     和level
+    &ndash;&gt;
+    <root level="info">
+        <appender-ref ref="stdout" />
+        <appender-ref ref="appLogAppender" />
+    </root>
+
+</configuration>-->
+
+<!--日志级别从低到高分别为：TRACE < DEBUG < INFO < WARN < ERROR < FATAL,如果默认设置为 WARN 则低于WARN的信息都不会输出 -->
+<!--scan：当此属性为 true时，配置文档如果发生改变，将会被重新加载，默认值为：true-->
+<!--scanPeriod：设置检测配置文档是否有修改的时间间隔，如果没有给出时间单位，则默认是毫秒。
+                当设置scan 为 true 时，此属性生效。默认时间问间隔1分钟-->
+<!--debug：当此属性为true 时，将打印由 logback 内部日志信息，实时查看logback运行状态。默认值为 false-->
+<configuration scan="true" scanPeriod="10 seconds">
+    <contextName>logback</contextName>
+    <!--
+    name 的值是变量的名称，value的值是变量定义的值，
+    通过定义的值会被插入到logger 上下文中。定义后，可以使用"${}" 来使用便令
+    -->
+    <property name="log.path" value="${basedir}/logs/"/>
+
+    <!--
+    日志格式和颜色渲染
+    彩色日志依赖的渲染类
+    -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+    <!--彩色日志格式-->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}) {faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:-}){magenta} %clr(---){faint} %clr([%15.15t]) {faint} %clr(%-40.40logger{39}){cyan} $clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+
+    <!--1. 输出到控制台-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender" >
+        <!--此日志 appender 是为开发时使用，只配置最低级别，控制台输出的日志级别大于或等于此级别的日志信息-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>debug</level>
+        </filter>
+        <encoder>
+            <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--2.输出到文档-->
+    <!--2.1 level 为 DEBUG日志，时间滚动输出-->
+    <appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/JUCApplication_debug.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} -%msm%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志归档-->
+            <fileNamePattern>${log.path}/JUCApplication-debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--保留15天-->
+            <maxHistory>15</maxHistory>
+        </rollingPolicy>
+        <!--只记录DEBUG级别的-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>debug</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <!--2.2 level 为 INFO 日志滚动输出-->
+    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/JUCApplication_info.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} -%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/JUCApplication-info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>15</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <!--2.3 level 为 WARN 级别的日志滚动输出-->
+    <appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/JUCApplication_warn.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} -%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/JUCApplication-warn-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>15</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>warn</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--2.4 level 为 ERROR 级别的日志滚动输出-->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/JUCApplication_error.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} -%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/JUCApplication-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>15</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <springProfile name="dev">
+        <logger name="com.xgg.hightconcurren" level="debug"></logger>
+    </springProfile>
+    <root level="info">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="DEBUG_FILE" />
+        <appender-ref ref="INFO_FILE" />
+        <appender-ref ref="WARN_FILE" />
+        <appender-ref ref="ERROR_FILE "/>
+    </root>
+</configuration>
