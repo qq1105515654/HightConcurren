@@ -84,28 +84,28 @@
 <!--scanPeriod：设置检测配置文档是否有修改的时间间隔，如果没有给出时间单位，则默认是毫秒。
                 当设置scan 为 true 时，此属性生效。默认时间问间隔1分钟-->
 <!--debug：当此属性为true 时，将打印由 logback 内部日志信息，实时查看logback运行状态。默认值为 false-->
-<configuration scan="true" scanPeriod="10 seconds">
+<!--<configuration scan="true" scanPeriod="10 seconds">
     <contextName>logback</contextName>
-    <!--
+    &lt;!&ndash;
     name 的值是变量的名称，value的值是变量定义的值，
     通过定义的值会被插入到logger 上下文中。定义后，可以使用"${}" 来使用便令
-    -->
+    &ndash;&gt;
     <property name="log.path" value="${basedir}/logs/"/>
 
-    <!--
+    &lt;!&ndash;
     日志格式和颜色渲染
     彩色日志依赖的渲染类
-    -->
+    &ndash;&gt;
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
     <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
     <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
-    <!--彩色日志格式-->
+    &lt;!&ndash;彩色日志格式&ndash;&gt;
     <property name="CONSOLE_LOG_PATTERN"
-              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}) {faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:-}){magenta} %clr(---){faint} %clr([%15.15t]) {faint} %clr(%-40.40logger{39}){cyan} $clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}) {faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:-}){magenta} %clr(-&#45;&#45;){faint} %clr([%15.15t]) {faint} %clr(%-40.40logger{39}){cyan} $clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
 
-    <!--1. 输出到控制台-->
+    &lt;!&ndash;1. 输出到控制台&ndash;&gt;
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender" >
-        <!--此日志 appender 是为开发时使用，只配置最低级别，控制台输出的日志级别大于或等于此级别的日志信息-->
+        &lt;!&ndash;此日志 appender 是为开发时使用，只配置最低级别，控制台输出的日志级别大于或等于此级别的日志信息&ndash;&gt;
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>debug</level>
         </filter>
@@ -115,8 +115,8 @@
         </encoder>
     </appender>
 
-    <!--2.输出到文档-->
-    <!--2.1 level 为 DEBUG日志，时间滚动输出-->
+    &lt;!&ndash;2.输出到文档&ndash;&gt;
+    &lt;!&ndash;2.1 level 为 DEBUG日志，时间滚动输出&ndash;&gt;
     <appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/JUCApplication_debug.log</file>
         <encoder>
@@ -124,22 +124,22 @@
             <charset>UTF-8</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--日志归档-->
+            &lt;!&ndash;日志归档&ndash;&gt;
             <fileNamePattern>${log.path}/JUCApplication-debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.TimeBasedFileNamingAndTriggeringPolicy">
                 <maxFileSize>50MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
-            <!--保留15天-->
+            &lt;!&ndash;保留15天&ndash;&gt;
             <maxHistory>15</maxHistory>
         </rollingPolicy>
-        <!--只记录DEBUG级别的-->
+        &lt;!&ndash;只记录DEBUG级别的&ndash;&gt;
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>debug</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
-    <!--2.2 level 为 INFO 日志滚动输出-->
+    &lt;!&ndash;2.2 level 为 INFO 日志滚动输出&ndash;&gt;
     <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/JUCApplication_info.log</file>
         <encoder>
@@ -159,7 +159,7 @@
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
-    <!--2.3 level 为 WARN 级别的日志滚动输出-->
+    &lt;!&ndash;2.3 level 为 WARN 级别的日志滚动输出&ndash;&gt;
     <appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/JUCApplication_warn.log</file>
         <encoder>
@@ -180,7 +180,7 @@
         </filter>
     </appender>
 
-    <!--2.4 level 为 ERROR 级别的日志滚动输出-->
+    &lt;!&ndash;2.4 level 为 ERROR 级别的日志滚动输出&ndash;&gt;
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/JUCApplication_error.log</file>
         <encoder>
@@ -211,4 +211,4 @@
         <appender-ref ref="WARN_FILE" />
         <appender-ref ref="ERROR_FILE "/>
     </root>
-</configuration>
+</configuration>-->

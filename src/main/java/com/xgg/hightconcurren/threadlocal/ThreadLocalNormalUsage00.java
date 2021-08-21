@@ -12,13 +12,15 @@ import java.util.Date;
 public class ThreadLocalNormalUsage00 {
 
     public static void main(String[] args) {
-        new Thread(()->{
+        Thread t1=new Thread(()->{
             System.out.println(new ThreadLocalNormalUsage00().date(10));
-        }).start();
-
-        new Thread(() ->{
+        });
+        t1.start();
+        Thread t2=new Thread(() ->{
             System.out.println(new ThreadLocalNormalUsage00().date(1000));
-        }).start();
+        });
+        t2.start();
+
     }
 
     public String date(int seconds){
